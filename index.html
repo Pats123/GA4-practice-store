@@ -1805,14 +1805,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     function trackEvent(eventName, parameters = {}) {
 
-  window.dataLayer = window.dataLayer || [];
+      window.dataLayer = window.dataLayer || [];
 
-  window.dataLayer.push({
-    event: eventName,
-    ...parameters
-  });
+      window.dataLayer.push({
+        event: eventName,
+        ...parameters
+      });
 
-}
+    }
 
     function showMessage(text) {
 
@@ -1854,7 +1854,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       trackEvent("add_to_cart", {
 
-        currency: "INR",
+      ecommerce: {        currency: "INR",
 
         value: Number(price),
 
@@ -1866,6 +1866,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           quantity: 1
         }]
 
+
+      }
       });
 
       showMessage(name + " added to cart!");
@@ -1901,7 +1903,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       trackEvent("view_cart", {
 
-        currency: "INR",
+      ecommerce: {        currency: "INR",
 
         value: calculateCartTotal(),
 
@@ -1915,6 +1917,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         }))
 
+
+      }
       });
 
     }
@@ -2053,7 +2057,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       trackEvent("remove_from_cart", {
 
-        currency: "INR",
+      ecommerce: {        currency: "INR",
 
         value: product.price * product.quantity,
 
@@ -2065,6 +2069,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           quantity: product.quantity
         }]
 
+
+      }
       });
 
       showMessage(
@@ -2096,7 +2102,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       trackEvent("begin_checkout", {
 
-        currency: "INR",
+      ecommerce: {        currency: "INR",
 
         value: calculateCartTotal(),
 
@@ -2110,6 +2116,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         }))
 
+
+      }
       });
 
     }
@@ -2170,7 +2178,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       trackEvent("purchase", {
 
-        transaction_id: transactionId,
+      ecommerce: {        transaction_id: transactionId,
 
         currency: "INR",
 
@@ -2186,6 +2194,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         }))
 
+
+      }
       });
 
       cart = [];
@@ -2366,13 +2376,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       function () {
 
         loadCart();
-
-        trackEvent("page_view", {
-
-          page_title: document.title,
-          page_location: window.location.href
-
-        });
 
       }
     );

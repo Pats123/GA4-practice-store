@@ -672,6 +672,61 @@
       }
     }
   </style>
+
+<style>
+  /* Thank You Page */
+  .thank-you-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: #f7f7f7;
+  }
+
+  .thank-you-box {
+    background: #ffffff;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    padding: 50px 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .thank-you-icon {
+    font-size: 70px;
+    margin-bottom: 20px;
+  }
+
+  .thank-you-box h1 {
+    color: #16a34a;
+    margin-bottom: 15px;
+  }
+
+  .thank-you-box p {
+    color: #555;
+    font-size: 17px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }
+
+  .thank-you-home {
+    display: inline-block;
+    padding: 13px 22px;
+    background: #2563eb;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .thank-you-home:hover {
+    background: #1d4ed8;
+  }
+</style>
+
 </head>
 
 <body>
@@ -2237,12 +2292,44 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       });
 
-      showMessage(
-        "Thank you, " + name +
-        "! Your message has been submitted."
-      );
-
       event.target.reset();
+
+      // Show the Thank You page after the contact form is submitted.
+      // A short delay gives GTM time to receive the event.
+      setTimeout(function () {
+
+        document.body.innerHTML = `
+
+          <div class="thank-you-page">
+
+            <div class="thank-you-box">
+
+              <div class="thank-you-icon">✅</div>
+
+              <h1>Thank You for Contacting Us!</h1>
+
+              <p>
+                Your message has been submitted successfully.
+                We appreciate you reaching out to ShopEase.
+              </p>
+
+              <a
+                href="#"
+                class="thank-you-home"
+                onclick="location.reload(); return false;"
+              >
+                Back to ShopEase
+              </a>
+
+            </div>
+
+          </div>
+
+        `;
+
+        window.scrollTo(0, 0);
+
+      }, 300);
 
     }
 

@@ -21,29 +21,7 @@
     name="description"
     content="ShopEase - Demo e-commerce website for GA4 learning and practice."
   >
-  <!-- =====================================================
-       GA4 GOOGLE TAG
-       Measurement ID: G-YW1L3DWM3W
-  ====================================================== -->
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YW1L3DWM3W"></script>
-
-  <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-
-    gtag("js", new Date());
-    gtag("config", "G-YW1L3DWM3W");
-  </script>
-
-  <!-- Google Ads Google tag -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18461197335"></script>
-  <script>
-    gtag("config", "AW-18461197335");
-  </script>
+  <!-- Configure GA4 and Google Ads tags through GTM to avoid duplicate tracking. -->
 
   <style>
     * {
@@ -677,6 +655,22 @@
         align-items: flex-start;
       }
     }
+  
+    .nav-action { border:1px solid #60a5fa; background:transparent; color:white; padding:8px 12px; border-radius:6px; cursor:pointer; margin:4px; }
+    .nav-action.primary { background:#2563eb; border-color:#2563eb; }
+    .product-tools { display:flex; gap:12px; flex-wrap:wrap; margin:0 0 22px; }
+    .product-tools input,.product-tools select { padding:12px; border:1px solid #d1d5db; border-radius:6px; font-size:15px; }
+    .product-tools input { flex:1; min-width:220px; }
+    .faq-list { display:grid; gap:12px; }
+    .faq-item { background:#fff; border-radius:8px; padding:16px 20px; box-shadow:0 2px 8px rgba(0,0,0,.05); }
+    .faq-question { width:100%; text-align:left; border:0; background:transparent; font-weight:bold; font-size:17px; cursor:pointer; color:#111827; }
+    .faq-answer { display:none; padding-top:12px; color:#555; }
+    .faq-answer.open { display:block; }
+    .contact-item a { color:#2563eb; }
+    .modal-form .form-group { margin-bottom:14px; }
+    .demo-note { color:#6b7280; font-size:13px; margin:10px 0; }
+    @media (max-width:800px) { .product-tools { flex-direction:column; } .product-tools input,.product-tools select { width:100%; } }
+
   </style>
 
 <style>
@@ -754,6 +748,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <a href="#products">Products</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
+        <a href="#faq">FAQ</a>
+        <button class="nav-action" onclick="openAccountModal('login')">Log In</button>
+        <button class="nav-action primary" onclick="openAccountModal('signup')">Sign Up</button>
 
         <button class="cart-button" onclick="viewCart()">
           🛒 Cart
@@ -797,6 +794,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2>
       Featured Products
     </h2>
+
+    <div class="product-tools">
+      <input type="search" id="productSearch" placeholder="Search products..." aria-label="Search products" oninput="filterProducts()">
+      <select id="categoryFilter" aria-label="Filter by category" onchange="filterProducts()">
+        <option value="all">All categories</option><option value="Electronics">Electronics</option>
+        <option value="Fashion">Fashion</option><option value="Home & Kitchen">Home &amp; Kitchen</option>
+        <option value="Sports & Fitness">Sports &amp; Fitness</option>
+      </select>
+      <select id="productSort" aria-label="Sort products" onchange="sortProducts()">
+        <option value="default">Sort: Featured</option><option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option><option value="name">Name: A to Z</option>
+      </select>
+    </div>
 
     <div class="products" id="productGrid">
 
@@ -1471,7 +1481,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
           <div>
             <h3>Call Us</h3>
-            <p>+91 98765 43210</p>
+            <p><a href="tel:+919876543210" onclick="trackEvent('phone_click',{link_location:'contact_info'})">+91 98765 43210</a></p>
           </div>
         </div>
 
@@ -1480,7 +1490,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
           <div>
             <h3>Email Us</h3>
-            <p>support@shopease.example</p>
+            <p><a href="mailto:support@shopease.example" onclick="trackEvent('email_click',{link_location:'contact_info'})">support@shopease.example</a></p>
           </div>
         </div>
 
@@ -1554,6 +1564,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
 
           <div class="form-group">
+            <label for="preferredContact">Preferred Contact Method</label>
+            <select id="preferredContact" required onchange="trackEvent('contact_method_select',{contact_method:this.value})">
+              <option value="">Choose how we should contact you</option>
+              <option value="email">Email</option><option value="phone">Phone</option>
+            </select>
+          </div>
+
+          <div class="form-group">
 
             <label for="contactMessage">
               Message
@@ -1581,6 +1599,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     </div>
 
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="section" id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-question" aria-expanded="false" onclick="toggleFAQ(this,'shipping')">How long does delivery take? ＋</button><div class="faq-answer">This is a demo store. In a real store, delivery timing depends on your location and the seller's shipping policy.</div></div>
+      <div class="faq-item"><button class="faq-question" aria-expanded="false" onclick="toggleFAQ(this,'returns')">What is your return policy? ＋</button><div class="faq-answer">This demo does not process real orders or returns. A live store should explain its return window and conditions here.</div></div>
+      <div class="faq-item"><button class="faq-question" aria-expanded="false" onclick="toggleFAQ(this,'payment')">Which payment methods are available? ＋</button><div class="faq-answer">Checkout offers demo choices for Cash on Delivery, UPI, and card. No real payment is processed.</div></div>
+      <div class="faq-item"><button class="faq-question" aria-expanded="false" onclick="toggleFAQ(this,'account')">Do I need an account to shop? ＋</button><div class="faq-answer">No account is required. Log In and Sign Up are demo interactions for GTM event testing only.</div></div>
+    </div>
   </section>
 
   <!-- NEWSLETTER -->
@@ -1623,6 +1652,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </p>
 
   </footer>
+
+  <!-- DEMO ACCOUNT MODAL: no real authentication or account creation -->
+  <div id="accountModal" class="modal">
+    <div class="modal-content" style="max-width:520px">
+      <span class="close" onclick="closeModal('accountModal')" aria-label="Close">&times;</span>
+      <h2 id="accountTitle">Log In</h2>
+      <p class="demo-note">Practice only: this form does not create an account or verify credentials.</p>
+      <form id="accountForm" onsubmit="submitAccountForm(event)">
+        <div class="form-group" id="accountNameGroup"><label for="accountName">Name (Sign Up only)</label><input type="text" id="accountName" placeholder="Enter your name" autocomplete="name"></div>
+        <div class="form-group"><label for="accountEmail">Email address</label><input type="email" id="accountEmail" placeholder="you@example.com" autocomplete="email" required></div>
+        <div class="form-group"><label for="accountPassword">Demo password</label><input type="password" id="accountPassword" placeholder="Enter any demo password" autocomplete="off" required minlength="4"></div>
+        <button class="contact-submit" type="submit" id="accountSubmit">Log In</button>
+      </form>
+      <p style="margin-top:15px">Switch mode: <a href="#" onclick="switchAccountMode(event)">Sign Up / Log In</a></p>
+    </div>
+  </div>
 
   <!-- MESSAGE -->
 
@@ -2288,14 +2333,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       const name =
         document.getElementById("contactName").value;
 
-      const subject =
-        document.getElementById("contactSubject").value;
-
       trackEvent("contact_form_submit", {
-
         form_name: "contact_form",
-        subject: subject
-
+        preferred_contact_method: document.getElementById("preferredContact").value
       });
 
       event.target.reset();
@@ -2347,18 +2387,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       event.preventDefault();
 
-      const email =
-        document.getElementById(
-          "newsletterEmail"
-        ).value;
-
-      trackEvent("newsletter_signup", {
-
-        method: "website",
-        email_domain:
-          email.split("@")[1] || ""
-
-      });
+      // Do not send an email address or domain to analytics.
+      trackEvent("newsletter_signup", { method: "website" });
 
       showMessage(
         "Thank you for subscribing!"
@@ -2366,6 +2396,70 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       event.target.reset();
 
+    }
+
+
+    /* PRODUCT SEARCH, FILTER AND SORT */
+    function filterProducts() {
+      const query = (document.getElementById("productSearch").value || "").trim().toLowerCase();
+      const category = document.getElementById("categoryFilter").value;
+      document.querySelectorAll("#productGrid .product").forEach(function(card) {
+        const name = (card.querySelector("h3")?.textContent || "").toLowerCase();
+        const desc = (card.querySelector("p")?.textContent || "").toLowerCase();
+        const cat = card.querySelector(".category")?.textContent || "";
+        card.style.display = (name.includes(query) || desc.includes(query)) && (category === "all" || cat === category) ? "" : "none";
+      });
+      trackEvent("product_search", {search_term: query ? "entered" : "cleared", category_filter: category});
+    }
+    function sortProducts() {
+      const grid = document.getElementById("productGrid");
+      const cards = Array.from(grid.querySelectorAll(".product"));
+      const mode = document.getElementById("productSort").value;
+      cards.sort(function(a,b) {
+        const na=a.querySelector("h3").textContent.trim(), nb=b.querySelector("h3").textContent.trim();
+        const pa=Number(a.querySelector(".price").textContent.replace(/[^\d]/g,""));
+        const pb=Number(b.querySelector(".price").textContent.replace(/[^\d]/g,""));
+        if(mode==="price-low") return pa-pb;
+        if(mode==="price-high") return pb-pa;
+        if(mode==="name") return na.localeCompare(nb);
+        return 0;
+      });
+      cards.forEach(card=>grid.appendChild(card));
+      filterProducts();
+      trackEvent("product_sort", {sort_option:mode});
+    }
+
+    /* DEMO LOGIN / SIGN-UP EVENTS */
+    let accountMode = "login";
+    function openAccountModal(mode) {
+      accountMode=mode; updateAccountModal();
+      document.getElementById("accountModal").style.display="block";
+      trackEvent(mode==="signup" ? "sign_up_start" : "login_start", {method:"website"});
+    }
+    function updateAccountModal() {
+      const signup=accountMode==="signup";
+      document.getElementById("accountTitle").textContent=signup ? "Create Demo Account" : "Log In";
+      document.getElementById("accountSubmit").textContent=signup ? "Sign Up" : "Log In";
+      document.getElementById("accountName").required=signup;
+      document.getElementById("accountNameGroup").style.display=signup ? "" : "none";
+    }
+    function switchAccountMode(event) {
+      event.preventDefault(); accountMode=accountMode==="login" ? "signup" : "login";
+      updateAccountModal(); trackEvent("account_mode_switch",{account_mode:accountMode});
+    }
+    function submitAccountForm(event) {
+      event.preventDefault();
+      // Never send name, email or password to analytics.
+      trackEvent(accountMode==="signup" ? "sign_up" : "login",{method:"website",demo_only:true});
+      closeModal("accountModal"); event.target.reset();
+      showMessage(accountMode==="signup" ? "Demo sign-up complete. No account was created." : "Demo login complete. No authentication was performed.");
+    }
+    function toggleFAQ(button, faqName) {
+      const answer=button.parentElement.querySelector(".faq-answer");
+      const opened=answer.classList.toggle("open");
+      button.setAttribute("aria-expanded",String(opened));
+      button.textContent=button.textContent.replace(/[＋−]$/,opened ? " −" : " ＋");
+      trackEvent(opened ? "faq_open" : "faq_close",{faq_name:faqName});
     }
 
     /* =====================================================
@@ -2477,4 +2571,3 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 </body>
 </html>
-

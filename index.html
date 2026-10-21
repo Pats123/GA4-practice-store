@@ -2387,14 +2387,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       event.preventDefault();
 
-      // Do not send an email address or domain to analytics.
-      trackEvent("newsletter_signup", { method: "website" });
+      // Track newsletter subscription in GTM without sending personal data.
+      trackEvent("newsletter_signup", {
+        method: "website"
+      });
 
-      showMessage(
-        "Thank you for subscribing!"
-      );
+      // Show the newsletter thank-you page after a short delay.
+      // The delay gives GTM time to receive the event.
+      setTimeout(function () {
 
-      event.target.reset();
+        document.body.innerHTML = `
+
+          <div class="thank-you-page">
+
+            <div class="thank-you-box">
+
+              <div class="thank-you-icon">✅</div>
+
+              <h1>Thank You for Subscribing!</h1>
+
+              <p>
+                You have successfully subscribed to the
+                ShopEase newsletter. Stay tuned for product
+                updates, news, and special offers!
+              </p>
+
+              <a
+                href="#"
+                class="thank-you-home"
+                onclick="location.reload(); return false;"
+              >
+                Back to ShopEase
+              </a>
+
+            </div>
+
+          </div>
+
+        `;
+
+        window.scrollTo(0, 0);
+
+      }, 300);
 
     }
 

@@ -2384,52 +2384,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     ====================================================== */
 
     function subscribeNewsletter(event) {
-
       event.preventDefault();
 
-      // Track newsletter subscription in GTM without sending personal data.
-      trackEvent("newsletter_signup", {
-        method: "website"
-      });
+      // Send the newsletter_signup event to GTM without sending personal data.
+      trackEvent("newsletter_signup", { method: "website" });
 
-      // Show the newsletter thank-you page after a short delay.
-      // The delay gives GTM time to receive the event.
+      // Show a full-screen thank-you page inside this same HTML file.
+      // The short delay gives GTM a moment to process the event.
       setTimeout(function () {
-
         document.body.innerHTML = `
-
-          <div class="thank-you-page">
-
-            <div class="thank-you-box">
-
-              <div class="thank-you-icon">✅</div>
-
+          <main class="thank-you-page">
+            <section class="thank-you-box">
+              <div class="thank-you-icon" aria-hidden="true">✅</div>
               <h1>Thank You for Subscribing!</h1>
-
-              <p>
-                You have successfully subscribed to the
-                ShopEase newsletter. Stay tuned for product
-                updates, news, and special offers!
-              </p>
-
-              <a
-                href="#"
-                class="thank-you-home"
-                onclick="location.reload(); return false;"
-              >
-                Back to ShopEase
-              </a>
-
-            </div>
-
-          </div>
-
+              <p>You have successfully subscribed to the ShopEase newsletter.</p>
+              <button class="thank-you-home" type="button" onclick="window.location.reload()">Back to ShopEase</button>
+            </section>
+          </main>
         `;
-
-        window.scrollTo(0, 0);
-
+        document.title = "Thank You for Subscribing! | ShopEase";
       }, 300);
-
     }
 
 
